@@ -13,7 +13,7 @@ import Masonry from 'react-masonry-component'
 import InfiniteScroll from 'react-infinite-scroller'
 import { Grid } from 'semantic-ui-react'
 
-import { fetchRecipes, fetchMoreRecipes, setSearch } from '../actions/index'
+import * as actions from '../actions/'
 
 import RecipeCard from './recipe-card'
 
@@ -50,15 +50,18 @@ class Recipes extends Component {
 
   componentWillReceiveProps(nextProps) {
     const search = this.props.location.query.search
+
     const nextSearch = nextProps.location.query.search
+
 
     if (this.props.recipes.length !== 0) {
       if (search !== nextSearch) {
-        this.props.fetchRecipes(nextSearch, () => {
-          this.props.setSearch(nextSearch)
-          this.setState({
-            offset: nextProps.recipes.length,
-          })
+        console.log('current search term: ', search)
+        console.log('new search term: ', nextSearch)
+        this.props.fetchRecipes(nextSearch)
+
+        this.setState({
+          offset: nextProps.recipes.length,
         })
       }
 
@@ -86,7 +89,7 @@ class Recipes extends Component {
         hasMore={this.state.hasMore}
         loadMore={() => {
           setTimeout(() => {
-            this.props.fetchMoreRecipes(this.state.offset, search)
+            this.props.fetchMoreRecipes(search, this.state.offset)
           }, 500)
         }}
         loader={<div>loading...</div>}
@@ -143,4 +146,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { fetchRecipes, fetchMoreRecipes, setSearch })(Recipes)
+export default connect(mapStateToProps, actions)(Recipes)

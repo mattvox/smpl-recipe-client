@@ -9,60 +9,71 @@ TODO
 - do I really need to track search terms globally because url query/params
 */
 
-import axios from 'axios';
+import axios from 'axios'
 
-const ROOT_URL = 'http://localhost:5000/api';
+const ROOT_URL = 'http://localhost:5000/api'
 
-export const FETCH_RECIPES = 'FETCH_RECIPES';
-export const FETCH_MORE_RECIPES = 'FETCH_MORE_RECIPES';
-export const FETCH_RECIPE = 'FETCH_RECIPE';
-export const SET_SEARCH = 'SET_SEARCH';
+export const FETCH_RECIPES = 'FETCH_RECIPES'
+export const FETCH_MORE_RECIPES = 'FETCH_MORE_RECIPES'
+export const FETCH_RECIPE = 'FETCH_RECIPE'
 
-export function fetchRecipes(search = '') {
-  const request = axios.get(`${ROOT_URL}/recipes?search=${search}&offset=0`);
+export const REQUEST_RECIPES = 'REQUEST_RECIPES'
+export const RECEIVE_RECIPES = 'RECEIVE_RECIPES'
 
+export const REQUEST_RECIPE = 'REQUEST_RECIPE'
+export const RECEIVE_RECIPE = 'RECEIVE_RECIPE'
+
+export function requestRecipes(isFetched) {
   return {
-    type: FETCH_RECIPES,
-    payload: request,
-  };
+    type: REQUEST_RECIPES,
+    payload: { isFetching: true, isFetched }
+  }
 }
 
-// export function fetchRecipes(search = '', callback) {
-//   const request = axios.get(`${ROOT_URL}/recipes?search=${search}&offset=0`)
-//   .then((response) => {
-//     callback();
-//     return response;
-//   });
-//
-//   return {
-//     type: FETCH_RECIPES,
-//     payload: request,
-//   };
-// }
+export function receiveRecipes(response) {
+  return {
+    type: RECEIVE_RECIPES,
+    payload: response
+  }
+}
+
+export function fetchRecipes(
+  search = '',
+  offset = 0,
+  isFetched = false,
+  callback = null
+) {
+  const request = axios.get(`${ROOT_URL}/recipes?search=${search}&offset=${offset}`)
+    .then(response => {
+      callback && callback()
+      return response
+    })
+    .catch(console.error)
+
+    return dispatch => {
+      dispatch(requestRecipes(isFetched))
+
+      return request
+        .then(response => dispatch(receiveRecipes(response)))
+    }
+}
 
 // clean up the way offset is implemented in this action
 
-export function fetchMoreRecipes(offset = 0, search = '') {
-  const request = axios.get(`${ROOT_URL}/recipes?offset=${offset}&search=${search}`);
+export function fetchMoreRecipes(search = '', offset = 0) {
+  const request = axios.get(`${ROOT_URL}/recipes?search=${search}&offset=${offset}`)
 
   return {
     type: FETCH_MORE_RECIPES,
     payload: request,
-  };
+  }
 }
 
 export function fetchRecipe(id) {
-  const request = axios.get(`${ROOT_URL}/recipes/${id}`);
+  const request = axios.get(`${ROOT_URL}/recipes/${id}`)
   // then()
   return {
     type: FETCH_RECIPE,
     payload: request,
-  };
-}
-
-export function setSearch(search) {
-  return {
-    type: SET_SEARCH,
-    payload: search,
-  };
+  }
 }

@@ -24,14 +24,18 @@ class SearchBar extends Component {
   handleFormSubmit(event) {
     event.preventDefault();
 
-    this.props.fetchRecipes(this.state.searchTerm, () => {
-      browserHistory.push(`/?search=${this.state.searchTerm}`)
-      this.props.setSearch(this.state.searchTerm)
+    const search = this.state.searchTerm.toLowerCase()
+    const offset = 0
+    const isFetched = false
+    const callback = () => {
+      browserHistory.push(`/recipes?search=${search}`)
 
       this.setState({
         searchTerm: '',
       })
-    })
+    }
+
+    this.props.fetchRecipes(search, offset, isFetched, callback)
   }
 
   render() {
