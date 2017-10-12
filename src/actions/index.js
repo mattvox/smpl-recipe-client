@@ -71,7 +71,7 @@ export function fetchMoreRecipes(search = '', offset = 0) {
 
 export function fetchRecipe(id) {
   const request = axios.get(`${ROOT_URL}/recipes/${id}`)
-  // then()
+
   return {
     type: FETCH_RECIPE,
     payload: request,

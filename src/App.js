@@ -3,10 +3,8 @@ import Header from './components/header';
 
 const App = (props) => (
   <div>
-    <div className='row'>
-      <Header />
-      {props.children}
-    </div>
+    <Header />
+    {props.children}
   </div>
 );
 
