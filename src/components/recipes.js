@@ -6,6 +6,7 @@ TODO
 - refactor Redux state with better, less redundant object names
 */
 
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
@@ -43,7 +44,8 @@ class Recipes extends Component {
   }
 
   componentDidMount() {
-    if (this.props.recipes.length === 0) {
+    // if (this.props.recipes.length === 0) {
+    if (Object.keys(this.props.recipes).length === 0) {
       this.props.fetchRecipes(this.props.location.query.search)
     }
   }
@@ -54,18 +56,21 @@ class Recipes extends Component {
     const nextSearch = nextProps.location.query.search
 
 
-    if (this.props.recipes.length !== 0) {
+    // if (this.props.recipes.length !== 0) {
+    if (Object.keys(this.props.recipes).length !== 0) {
       if (search !== nextSearch) {
         console.log('current search term: ', search)
         console.log('new search term: ', nextSearch)
         this.props.fetchRecipes(nextSearch)
 
         this.setState({
-          offset: nextProps.recipes.length,
+          // offset: nextProps.recipes.length,
+          offset: Object.keys(nextProps.recipes).length,
         })
       }
 
-      if (this.props.recipes.length === nextProps.recipes.length) {
+      // if (this.props.recipes.length === nextProps.recipes.length) {
+      if (Object.keys(this.props.recipes).length === Object.keys(nextProps.recipes).length) {
         this.setState({
           hasMore: false,
         })
@@ -77,7 +82,8 @@ class Recipes extends Component {
     }
 
     this.setState({
-      offset: nextProps.recipes.length || 0,
+      // offset: nextProps.recipes.length || 0,
+      offset: Object.keys(nextProps.recipes).length || 0,
     })
   }
 
@@ -113,7 +119,21 @@ class Recipes extends Component {
   }
 
   renderRecipes() {
-    return this.props.recipes.map((recipe) => {
+    // return this.props.recipes.map((recipe) => {
+    //   return (
+    //     <div key={recipe.id} style={cardStyle}>
+    //       <Link to={`recipes/${recipe.id}`}>
+    //         <RecipeCard
+    //           title={recipe.title}
+    //           image={recipe.image_url}
+    //           id={recipe.id}
+    //         />
+    //       </Link>
+    //     </div>
+    //   )
+    // })
+
+    return _.map(this.props.recipes, recipe => {
       return (
         <div key={recipe.id} style={cardStyle}>
           <Link to={`recipes/${recipe.id}`}>
@@ -124,14 +144,26 @@ class Recipes extends Component {
             />
           </Link>
         </div>
-
       )
     })
+    // return this.props.recipes.map((recipe) => {
+    //   return (
+    //     <div key={recipe.id} style={cardStyle}>
+    //       <Link to={`recipes/${recipe.id}`}>
+    //         <RecipeCard
+    //           title={recipe.title}
+    //           image={recipe.image_url}
+    //           id={recipe.id}
+    //         />
+    //       </Link>
+    //     </div>
+    //   )
+    // })
   }
 
   render() {
 // if isLoading render spinner else do below
-    if (this.props.recipes.length === 0) {
+    if (!this.props.recipes) {
       return <div>LOADING...</div>
     // eslint-disable-next-line
     } else {
@@ -143,6 +175,7 @@ class Recipes extends Component {
 function mapStateToProps(state) {
   return {
     recipes: state.recipes.recipes,
+    isFetched: state.recipes.isFetched,
   }
 }
 
