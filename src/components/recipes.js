@@ -17,7 +17,7 @@ const cardStyle = {
 }
 
 const masonryContainer = {
-  margin: '20px auto',
+  margin: '40px auto',
 }
 
 const masonryOptions = {
@@ -86,7 +86,7 @@ class Recipes extends Component {
   renderRecipes() {
     return _.map(this.props.recipes, recipe => {
       const { id, title, image_url } = recipe
-      
+
       return (
         <li key={id} style={cardStyle}>
           <Link to={`recipes/${id}`}>

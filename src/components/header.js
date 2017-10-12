@@ -1,31 +1,36 @@
-/*
-TODO
+import React from 'react'
+import Headroom from 'react-headroom'
+import { withStyles } from 'material-ui/styles'
+import AppBar from 'material-ui/AppBar'
+import Toolbar from 'material-ui/Toolbar'
+import Typography from 'material-ui/Typography'
 
-- break nav bar out into its own component?
-*/
+import SearchBar from './search-bar'
 
-import React from 'react';
-import Headroom from 'react-headroom';
-import { Grid, Menu } from 'semantic-ui-react';
+const styles = theme => ({
+  root: {
+    width: '100%',
+  },
+})
 
-import SearchBar from './search-bar';
-
-const Header = () => (
-  <Headroom>
-    <Grid centered textAlign='center'>
-      <Grid.Row columns={1}>
-        <Grid.Column>
-          <Menu borderless>
-            <Menu.Item header>smpl Recipe</Menu.Item>
-            <Menu.Item position='right'>
+const Header = (props) => {
+  const { classes } = props;
+  return (
+    <Headroom>
+      <div className={classes.root}>
+        <AppBar position="static" color="default">
+          <Toolbar>
+            <Typography type="title" color="inherit">
+              smplRecipe
+            </Typography>
+            <div style={{ marginLeft: 'auto' }}>
               <SearchBar />
-            </Menu.Item>
-          </Menu>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+            </div>
+          </Toolbar>
+        </AppBar>
+      </div>
+    </Headroom>
+  )
+}
 
-  </Headroom>
-);
-
-export default Header;
+export default withStyles(styles)(Header)

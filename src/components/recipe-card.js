@@ -1,29 +1,35 @@
 import React from 'react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import { Card, CardTitle, CardMedia } from 'material-ui/Card'
+import { withStyles } from 'material-ui/styles'
+import Card, { CardContent, CardMedia } from 'material-ui/Card'
+import Typography from 'material-ui/Typography'
 
-const divStyle = {
-  marginBottom: '30px',
-};
-
-const imgStyle = {
-  width: '100%',
-  textAlign: 'center',
-};
+const styles = {
+  card: {
+    maxWidth: 330,
+    marginBottom: '40px',
+  },
+  media: {
+    height: 200,
+  },
+}
 
 const RecipeCard = (props) => {
-  return (
-    <div style={divStyle}>
-      <MuiThemeProvider>
-        <Card>
-          <CardTitle title={props.title} />
-          <CardMedia>
-            <img src={props.image} style={imgStyle} alt={`img${props.id}`} />
-          </CardMedia>
-        </Card>
-      </MuiThemeProvider>
-    </div>
-  );
-};
+  const { classes } = props
 
-export default RecipeCard;
+  return (
+    <Card className={classes.card}>
+      <CardMedia
+        className={classes.media}
+        image={props.image}
+        title={props.title}
+      />
+      <CardContent>
+        <Typography type='headline' component='h2'>
+          {props.title}
+        </Typography>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default withStyles(styles)(RecipeCard)
