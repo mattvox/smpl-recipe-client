@@ -6,23 +6,16 @@ import Masonry from 'react-masonry-component'
 import InfiniteScroll from 'react-infinite-scroller'
 
 import * as actions from '../actions/'
-
 import RecipeCard from './recipe-card'
 
-const cardStyle = {
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  width: '260px',
-  listStyle: 'none',
-}
 
-const masonryContainer = {
-  margin: '40px auto',
-}
-
-const masonryOptions = {
-  columnWidth: 300,
-  fitWidth: true,
+const classes = {
+  card: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '260px',
+    listStyle: 'none',
+  },
 }
 
 class Recipes extends Component {
@@ -41,17 +34,19 @@ class Recipes extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('NEXT', nextProps)
     const search = this.props.location.query.search
     const nextSearch = nextProps.location.query.search
     const recipeLength = Object.keys(this.props.recipes).length
     const nextRecipeLength = Object.keys(nextProps.recipes).length
 
-    search !== nextSearch &&
-      this.props.fetchRecipes(nextSearch)
-
     recipeLength === nextRecipeLength
       ? this.setState({ hasMore: false })
       : this.setState({ hasMore: true })
+
+    search !== nextSearch &&
+      this.props.fetchRecipes(nextSearch) &&
+        this.setState({ hasMore: true })
 
     this.setState({ offset: nextRecipeLength || 0 })
   }
@@ -73,9 +68,12 @@ class Recipes extends Component {
         useWindow
       >
         <Masonry
-          style={masonryContainer}
+          style={{ margin: '40px auto' }}
           elementType={'ul'}
-          options={masonryOptions}
+          options={{
+            columnWidth: 300,
+            fitWidth: true,
+          }}
         >
           {this.renderRecipes()}
         </Masonry>
@@ -88,7 +86,7 @@ class Recipes extends Component {
       const { id, title, image_url } = recipe
 
       return (
-        <li key={id} style={cardStyle}>
+        <li key={id} style={classes.card}>
           <Link to={`recipes/${id}`}>
             <RecipeCard
               title={title}

@@ -1,5 +1,6 @@
 import React from 'react'
 import Headroom from 'react-headroom'
+import { blueGrey, grey } from 'material-ui/colors'
 import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -11,6 +12,12 @@ const styles = theme => ({
   root: {
     width: '100%',
   },
+  title: {
+    color: blueGrey[800],
+  },
+  bar: {
+    backgroundColor: grey[100],
+  }
 })
 
 const Header = (props) => {
@@ -18,10 +25,10 @@ const Header = (props) => {
   return (
     <Headroom>
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+        <AppBar position="static" className={classes.bar}>
           <Toolbar>
-            <Typography type="title" color="inherit">
-              smplRecipe
+            <Typography type="title" className={classes.title}>
+              <strong>SMPL RECIPE</strong>
             </Typography>
             <div style={{ marginLeft: 'auto' }}>
               <SearchBar />

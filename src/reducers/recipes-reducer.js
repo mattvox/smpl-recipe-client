@@ -1,7 +1,6 @@
 import { mapKeys } from 'lodash'
 import {
   FETCH_MORE_RECIPES,
-  FETCH_RECIPE,
   REQUEST_RECIPES,
   RECEIVE_RECIPES,
 } from '../actions/index';
@@ -22,25 +21,22 @@ function receiveRecipes(state, action) {
   return {
     ...state,
     recipes,
-    // recipes: { ...state.recipes, ...recipes },
     isFetching: false,
     isFetched: true,
   }
+}
+
+function fetchMoreRecipes(state, action) {
+  const recipes = mapKeys(action.payload.data, 'id')
+
+  return { ...state, recipes: { ...state.recipes, ...recipes } }
 }
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case REQUEST_RECIPES: return requestRecipes(state, action)
     case RECEIVE_RECIPES: return receiveRecipes(state, action)
-
-    case FETCH_RECIPE:
-        return { ...state, activeRecipe: action.payload.data };
-
-    case FETCH_MORE_RECIPES:
-      const recipes = mapKeys(action.payload.data, 'id')
-
-      return { ...state, recipes: { ...state.recipes, ...recipes } }
-
+    case FETCH_MORE_RECIPES: return fetchMoreRecipes(state, action)
     default: return state
   }
 }

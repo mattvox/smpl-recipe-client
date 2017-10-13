@@ -1,51 +1,47 @@
-/*
-TODO
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
-- Style this and break out individual pieces to separate components
-*/
-
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
-
-import { fetchRecipe } from '../actions/index';
+import { fetchRecipe } from '../actions/index'
 
 class RecipeDetail extends Component {
   componentDidMount() {
-    this.props.fetchRecipe(this.props.params.id);
+    this.props.fetchRecipe(this.props.params.id)
   }
 
   renderIngredients() {
-    return this.props.recipe.data.ingredients.map((ingredient) => {
+    return this.props.recipe.ingredients.map((ingredient) => {
       return (
         <li key={ingredient}>{ingredient}</li>
-      );
-    });
+      )
+    })
   }
 
   renderMethods() {
-    return this.props.recipe.data.methods.map((method) => {
+    return this.props.recipe.methods.map((method) => {
       return (
         <li key={method}>{method}</li>
-      );
-    });
+      )
+    })
   }
 
-  render() {
-    const { recipe } = this.props;
-
-    if (!this.props.recipe.data) {
-      return <div>Loading...</div>;
-    }
+  renderRecipe() {
+    const {
+      title,
+      description,
+      image_url,
+      difficulty,
+      servings,
+    } = this.props.recipe
 
     return (
       <div className='col-sm-8 col-sm-offset-2'>
         <Link to='/'>Back to Home</Link>
-        <h3>{recipe.data.title}</h3>
-        <h6>{recipe.data.description}</h6>
-        <img src={recipe.data.image_url} alt={recipe.data.title} />
-        <p>Difficulty: {recipe.data.difficulty}</p>
-        <p>Servings: {recipe.data.servings}</p>
+        <h3>{title}</h3>
+        <h6>{description}</h6>
+        <img src={image_url} alt={title} />
+        <p>Difficulty: {difficulty}</p>
+        <p>Servings: {servings}</p>
         <p>Ingredients:</p>
         <ul>
           {this.renderIngredients()}
@@ -55,12 +51,23 @@ class RecipeDetail extends Component {
           {this.renderMethods()}
         </ol>
       </div>
-    );
+    )
+  }
+
+  render() {
+    return (
+      this.props.isFetched
+        ? this.renderRecipe()
+        : <div>Loading...</div>
+    )
   }
 }
 
-const mapStateToProps = (state) => (
-  { recipe: state.recipes.activeRecipe }
-);
+const mapStateToProps = ({ activeRecipe }) => {
+  return {
+    recipe: activeRecipe.recipe,
+    isFetched: activeRecipe.isFetched,
+  }
+}
 
-export default connect(mapStateToProps, { fetchRecipe })(RecipeDetail);
+export default connect(mapStateToProps, { fetchRecipe })(RecipeDetail)
