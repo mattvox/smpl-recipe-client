@@ -21,7 +21,8 @@ const styles = theme => ({
 })
 
 const Header = (props) => {
-  const { classes } = props;
+  const { classes } = props
+  
   return (
     <Headroom>
       <div className={classes.root}>

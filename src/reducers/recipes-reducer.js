@@ -3,9 +3,9 @@ import {
   FETCH_MORE_RECIPES,
   REQUEST_RECIPES,
   RECEIVE_RECIPES,
-} from '../actions/index';
+} from '../actions/index'
 
-const INITIAL_STATE = { recipes: {}, activeRecipe: {} };
+const INITIAL_STATE = { recipes: {}, activeRecipe: {} }
 
 function requestRecipes(state, action) {
   return {

@@ -29,7 +29,7 @@ class Recipes extends Component {
   }
 
   componentDidMount() {
-    !this.props.isFetched &&
+    this.props.isFetched ||
       this.props.fetchRecipes(this.props.location.query.search)
   }
 

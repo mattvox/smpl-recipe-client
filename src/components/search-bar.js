@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import { Input } from 'semantic-ui-react'
 
-
-
 import * as actions from '../actions'
 
 

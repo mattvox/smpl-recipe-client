@@ -1,9 +1,9 @@
-import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import React from 'react'
+import { Route, IndexRoute } from 'react-router'
 
-import App from './App';
-import Recipes from './components/recipes';
-import RecipeDetail from './components/recipe-detail';
+import App from './App'
+import Recipes from './components/recipes'
+import RecipeDetail from './components/recipe-detail'
 
 
 export default (
@@ -13,4 +13,4 @@ export default (
     <Route path='recipes' component={Recipes} />
     <Route path='recipes/:id' component={RecipeDetail} />
   </Route>
-);
+)
