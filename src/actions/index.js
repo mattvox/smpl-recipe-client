@@ -3,8 +3,7 @@
 import axios from 'axios'
 
 // server URL
-const ROOT_URL = process.env.REACT_APP_ROOT_URL ||
-  'http://localhost:5000/api'
+const ROOT_API_URL = process.env.REACT_APP_ROOT_URL
 
 // action types for handling multiple recipes data
 export const FETCH_RECIPES = 'FETCH_RECIPES'
@@ -24,7 +23,7 @@ export function fetchRecipes(
   isFetched = false,
   callback = null
 ) {
-  const request = axios.get(`${ROOT_URL}/recipes?search=${search}&offset=${offset}`)
+  const request = axios.get(`${ROOT_API_URL}/recipes?search=${search}&offset=${offset}`)
     .then(response => {
       callback && callback()
       return response
@@ -40,7 +39,7 @@ export function fetchRecipes(
 }
 
 export function fetchMoreRecipes(search = '', offset = 0) {
-  const request = axios.get(`${ROOT_URL}/recipes?search=${search}&offset=${offset}`)
+  const request = axios.get(`${ROOT_API_URL}/recipes?search=${search}&offset=${offset}`)
 
   return {
     type: FETCH_MORE_RECIPES,
@@ -63,7 +62,7 @@ export function receiveRecipes(response) {
 }
 
 export function fetchRecipe(id, isFetched = false, callback = null) {
-  const request = axios.get(`${ROOT_URL}/recipes/${id}`)
+  const request = axios.get(`${ROOT_API_URL}/recipes/${id}`)
     .then(response => {
       callback && callback()
       return response
