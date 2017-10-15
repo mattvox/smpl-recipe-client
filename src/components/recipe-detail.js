@@ -1,8 +1,31 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Grid, Image } from 'semantic-ui-react'
 
 import { fetchRecipe } from '../actions/index'
+
+const { Row, Column: Col } = Grid
+
+const styles = {
+  container: {
+    marginTop: '40px',
+    marginBottom: '40px',
+    backgroundColor: '#f5f5f5',
+    fontSize: '18px',
+    borderRadius: '6px'
+  },
+  image: {
+    boxShadow: '2px 2px 12px #dadada',
+  },
+  list: {
+    listStyle: 'none',
+    paddingLeft: 0,
+
+  },
+  item: {
+    paddingBottom: '16px',
+  },
+}
 
 class RecipeDetail extends Component {
   componentDidMount() {
@@ -10,17 +33,21 @@ class RecipeDetail extends Component {
   }
 
   renderIngredients() {
-    return this.props.recipe.ingredients.map((ingredient) => {
+    return this.props.recipe.ingredients.map((ingredient, index) => {
       return (
-        <li key={ingredient}>{ingredient}</li>
+        <li key={index} style={styles.item}>
+          {ingredient}
+        </li>
       )
     })
   }
 
   renderMethods() {
-    return this.props.recipe.methods.map((method) => {
+    return this.props.recipe.methods.map((method, index) => {
       return (
-        <li key={method}>{method}</li>
+        <li key={index} style={styles.item}>
+          <p><strong>{index + 1}. </strong>{method}</p>
+        </li>
       )
     })
   }
@@ -35,22 +62,34 @@ class RecipeDetail extends Component {
     } = this.props.recipe
 
     return (
-      <div className='col-sm-8 col-sm-offset-2'>
-        <Link to='/'>Back to Home</Link>
-        <h3>{title}</h3>
-        <h6>{description}</h6>
-        <img src={image_url} alt={title} />
-        <p>Difficulty: {difficulty}</p>
-        <p>Servings: {servings}</p>
-        <p>Ingredients:</p>
-        <ul>
-          {this.renderIngredients()}
-        </ul>
-        <p>Methods:</p>
-        <ol>
-          {this.renderMethods()}
-        </ol>
-      </div>
+      <Grid container centered stackable style={styles.container}>
+        <Row columns={2}>
+          <Col>
+            <Image style={styles.image} shape='rounded' fluid src={image_url} alt={title} />
+          </Col>
+          <Col>
+            <h1>{title}</h1>
+            <h3>{description}</h3>
+            <p>Difficulty: {difficulty}</p>
+            <p>Servings: {servings}</p>
+          </Col>
+        </Row>
+
+        <Row columns={2}>
+          <Col>
+            <h2>Ingredients</h2>
+            <ul style={styles.list}>
+              {this.renderIngredients()}
+            </ul>
+          </Col>
+          <Col>
+            <h2>Methods</h2>
+            <ul style={styles.list}>
+              {this.renderMethods()}
+            </ul>
+          </Col>
+        </Row>
+      </Grid>
     )
   }
 

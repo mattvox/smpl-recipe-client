@@ -34,15 +34,9 @@ class Recipes extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('NEXT', nextProps)
     const search = this.props.location.query.search
     const nextSearch = nextProps.location.query.search
-    const recipeLength = Object.keys(this.props.recipes).length
     const nextRecipeLength = Object.keys(nextProps.recipes).length
-
-    recipeLength === nextRecipeLength
-      ? this.setState({ hasMore: false })
-      : this.setState({ hasMore: true })
 
     search !== nextSearch &&
       this.props.fetchRecipes(nextSearch) &&
@@ -62,7 +56,10 @@ class Recipes extends Component {
         loadMore={() => {
           setTimeout(() => {
             this.props.fetchMoreRecipes(search, offset)
-          }, 500)
+              .then(res => this.setState({
+                hasMore: !!res.payload.data.length
+              }))
+          }, 300)
         }}
         loader={<div>loading...</div>}
         useWindow
